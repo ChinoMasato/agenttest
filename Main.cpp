@@ -22,13 +22,13 @@ void Main()
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
-    const int32 mapWidth  = (map[0].size() * tileSize);
-    const int32 mapHeight = (map.size() * tileSize);
+    const int32 mapWidth  = (map.width() * tileSize);
+    const int32 mapHeight = (map.height() * tileSize);
     Window::Resize(mapWidth, mapHeight);
 
     const double speed = 200.0; // 移動速度 (pixel / sec)
     const double radius = tileSize * 0.4;
-    Vec2 playerPos(Window::Center());
+    Vec2 playerPos(Scene::Center());
     Circle player(playerPos, radius);
 
     while (System::Update())
@@ -40,8 +40,8 @@ void Main()
         if (KeyDown.pressed())  velocity.y += speed;
 
         Vec2 nextPos = playerPos + velocity * Scene::DeltaTime();
-        nextPos.x = Clamp(nextPos.x, radius, Window::Width() - radius);
-        nextPos.y = Clamp(nextPos.y, radius, Window::Height() - radius);
+        nextPos.x = Clamp<double>(nextPos.x, radius, Scene::Width() - radius);
+        nextPos.y = Clamp<double>(nextPos.y, radius, Scene::Height() - radius);
 
         Point index = (nextPos / tileSize).asPoint();
         if (map.inBounds(index) && map[index] == 0)
